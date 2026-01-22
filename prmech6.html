@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormulaFlow - Работа, мощность, энергия</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #423F3F;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+        header {
+            background-color: #1B1B1D;
+            padding: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+        h1 {
+            color: #A89C9C;
+            font-size: 32px;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+        }
+        .card {
+            background-color: #D9D9D9;
+            width: min(600px, 90vw);
+            min-height: 380px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding: 30px;
+            user-select: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+        .card.fade-anim {
+            opacity: 0.4;
+            transform: scale(0.98);
+        }
+        .card.slide-out-left {
+            transform: translateX(-50px) scale(0.95);
+            opacity: 0;
+        }
+        .card.slide-in-right {
+            transform: translateX(50px) scale(0.95);
+            opacity: 0;
+            transition: none;
+        }
+        .card-content {
+            color: #1B1B1D;
+            font-size: 26px;
+            text-align: center;
+            line-height: 1.4;
+            font-weight: 400;
+        }
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 3px;
+            font-size: 0.9em;
+        }
+        .num {
+            border-bottom: 2px solid #1B1B1D;
+            padding-bottom: 1px;
+            display: block;
+            font-size: 1em;
+        }
+        .den {
+            padding-top: 1px;
+            display: block;
+            font-size: 1em;
+        }
+        sub { 
+            font-size: 0.6em; 
+            vertical-align: sub; 
+            margin-left: 1px;
+        }
+        sup { 
+            font-size: 0.6em; 
+            vertical-align: super; 
+            margin-left: 1px;
+        }
+        .nu {font-size: 1.1em;}
+        .eta {font-size: 0.9em;}
+        .alpha {font-size: 1.1em;}
+        .btn-back {
+            background-color: #B8B8B8;
+            color: #1B1B1D;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-back:hover {
+            background-color: #9F9F9F;
+        }
+        .btn-home {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #C0C0C0;
+            color: #1B1B1D;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .btn-home:hover {
+            background-color: #8F8484;
+        }
+        @media (max-width: 600px) {
+            .btn-home {
+                position: static;
+                margin-top: 20px;
+                width: min(600px, 90vw);
+                text-align: center;
+            }
+            .card-content {
+                font-size: 22px;
+            }
+            .fraction {
+                font-size: 0.85em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FormulaFlow</h1>
+    </header>
+    <div class="container">
+        <div class="card" id="flashcard">
+            <div class="card-content" id="cardText">
+            </div>
+        </div>
+        <button class="btn-back" id="prevBtn">Назад</button>
+    </div>
+    <a href="index.html" class="btn-home">Вернуться на главную страницу</a>
+    <script>
+        const cardsData = [
+            "Работа постоянной силы",
+            `A = FS cos<span class="alpha">α</span>`,
+            "Работа силы трения",
+            `A = -F<sub>тр</sub>S`,
+            "Работа силы тяжести",
+            `A = mg(h<sub>1</sub>-h<sub>2</sub>)`,
+            "Работа силы упругости",
+            `A = <div class="fraction"><span class="num">k</span><span class="den">2</span></div>(x<sub>1</sub><sup>2</sup>-x<sub>2</sub><sup>2</sup>)`,
+            "Мощность при равномерном прямолинейном движении",
+            `N = Fν`,
+            "Мощность",
+            `N = <div class="fraction"><span class="num">A</span><span class="den">t</span></div>`,
+            "Кинетическая энергия тела",
+            `E<sub>k</sub> = <div class="fraction"><span class="num">mv<sup>2</sup></span><span class="den">2</span></div>`,
+            "Потенциальная энергия тела",
+            `E<sub>p</sub> = mgh`,
+            "Потенциальная энергия упруго деформированного тела",
+            `E<sub>p</sub> = <div class="fraction"><span class="num">kx<sup>2</sup></span><span class="den">2</span></div>`,
+            "Полная механическая энергия замкнутой системы тел",
+            `E = E<sub>k</sub> + E<sub>p</sub> = const`,
+            "Теорема о кинетической энергии тела",
+            `A = <div class="fraction"><span class="num">mv<sub>2</sub><sup>2</sup></span><span class="den">2</span></div> - <div class="fraction"><span class="num">mv<sub>1</sub><sup>2</sup></span><span class="den">2</span></div>`,
+            "Коэффициент полезного действия",
+            `η = <div class="fraction"><span class="num">A<sub>п</sub></span><span class="den">A</span></div> = <div class="fraction"><span class="num">N<sub>п</sub></span><span class="den">N</span></div>`
+        ];
+        let currentIndex = 0;
+        const card = document.getElementById('flashcard');
+        const cardText = document.getElementById('cardText');
+        const prevBtn = document.getElementById('prevBtn');
+        function updateCardContent(index) {
+            cardText.innerHTML = cardsData[index];
+        }
+        updateCardContent(0);
+        card.addEventListener('click', () => {
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= cardsData.length) nextIndex = 0;
+            
+            if (currentIndex % 2 === 0) {
+                card.classList.add('fade-anim');
+                setTimeout(() => {
+                    currentIndex = nextIndex;
+                    updateCardContent(currentIndex);
+                    card.classList.remove('fade-anim');
+                }, 200);
+            } else {
+                card.classList.add('slide-out-left');
+                setTimeout(() => {
+                    currentIndex = nextIndex;
+                    updateCardContent(currentIndex);
+                    card.classList.remove('slide-out-left');
+                    card.classList.add('slide-in-right');
+                    setTimeout(() => {
+                        card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                        card.classList.remove('slide-in-right');
+                    }, 50);
+                }, 300);
+            }
+        });
+        prevBtn.addEventListener('click', () => {
+            let targetIndex;
+            if (currentIndex % 2 !== 0) {
+                targetIndex = currentIndex - 1;
+            } else {
+                targetIndex = currentIndex - 2;
+            }
+            if (targetIndex < 0) {
+                targetIndex = cardsData.length - 2;
+            }
+            card.classList.add('slide-out-left');
+            setTimeout(() => {
+                currentIndex = targetIndex;
+                updateCardContent(currentIndex);
+                card.classList.remove('slide-out-left');
+                card.classList.add('slide-in-right');
+                setTimeout(() => {
+                    card.classList.remove('slide-in-right');
+                }, 50);
+            }, 300);
+        });
+    </script>
+</body>
+</html>
