@@ -12,30 +12,25 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: #423F3F;
         }
-
         header {
             background-color: #1B1B1D;
             padding: 20px 0;
             text-align: center;
         }
-
         .site-title {
             font-size: 32px;
             font-weight: 300;
             color: #A89C9C;
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 40px 20px;
         }
-
         .intro-box {
             width: 610px;
             height: 190px;
@@ -46,29 +41,24 @@
             display: flex;
             align-items: center;
         }
-
         .intro-text {
             font-size: 24px;
             font-weight: 600;
             color: #D7D1D1;
             line-height: 1.3;
         }
-
         .intro-text .brand {
             font-size: 32px;
             font-weight: 900;
         }
-
         .categories-row {
             display: flex;
             gap: 70px;
             margin-bottom: 40px;
         }
-
         .card-link {
             text-decoration: none;
         }
-
         .category-card {
             width: 273px;
             height: 194px;
@@ -81,19 +71,12 @@
             transition: filter 0.3s ease;
             padding: 20px;
         }
-
         .category-card:hover {
-            filter: brightness(0.85);
-        }
-
+            filter: brightness(0.85);}
         .category-card.light {
-            background-color: #D9D9D9;
-        }
-
+            background-color: #D9D9D9;}
         .category-card.dark {
-            background-color: #B3ADAD;
-        }
-
+            background-color: #B3ADAD;}
         .category-text {
             font-size: 36px;
             font-weight: 900;
@@ -102,11 +85,9 @@
             hyphens: auto;
             width: 100%;
         }
-
         .category-text.white {
             color: white;
         }
-
         .category-text.brown {
             color: #796F6F;
         }
@@ -116,39 +97,41 @@
     <header>
         <h1 class="site-title">FormulaFlow</h1>
     </header>
-
     <div class="container">
         <div class="intro-box">
             <p class="intro-text">
                 <span class="brand">FormulaFlow</span> - ваш тренажер для эффективного заучивания формул 
-по физике, который поможет запомнить не только набор символов, 
-но и их значение.
+по физике, который поможет быстрее запомнить нужный материал.
             </p>
         </div>
-
         <div class="categories-row">
-            <a href="index2.html" class="card-link">
+            <a href="mech.html" class="card-link">
                 <div class="category-card dark">
                     <span class="category-text white">Механика</span>
                 </div>
             </a>
-            <div class="category-card light">
-                <span class="category-text brown">Молекулярная физика</span>
-            </div>
-            <div class="category-card dark">
-                <span class="category-text white">Термодинамика</span>
-            </div>
-            <a href="index3.html" class="card-link">
+            <a href="permol.html" class="card-link">
+                <div class="category-card light">
+                    <span class="category-text brown">Молекулярная физика</span>
+                </div>
+            </a>
+            <a href="pertd.html" class="card-link">
+                <div class="category-card dark">
+                    <span class="category-text white">Термодинамика</span>
+                </div>
+            </a>
+            <a href="electr.html" class="card-link">
               <div class="category-card light">
                   <span class="category-text brown">Электродинамика</span>
               </div>
             </a>
         </div>
-
         <div class="categories-row">
-            <div class="category-card light">
-                <span class="category-text brown">Оптика</span>
-            </div>
+            <a href="peropt.html" class="card-link">
+                <div class="category-card light">
+                    <span class="category-text brown">Оптика</span>
+                </div>
+            </a>
             <div class="category-card dark">
                 <span class="category-text white">Элементы теории относительности</span>
             </div>
