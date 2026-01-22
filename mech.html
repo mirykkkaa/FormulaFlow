@@ -12,31 +12,26 @@
             padding: 0;
             box-sizing: border-box;
         }
-
         body {
             font-family: 'Inter', sans-serif;
             background-color: #423F3F;
         }
-
         header {
             background-color: #1B1B1D;
             padding: 20px 0;
             text-align: center;
             margin-bottom: 50px;
         }
-
         .site-title {
             font-size: 32px;
             font-weight: 300;
             color: #A89C9C;
         }
-
         .container {
             max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
-
         .section-title {
             font-size: 64px;
             font-weight: 800;
@@ -44,7 +39,6 @@
             color: #FFF0F0;
             margin-bottom: 20px;
         }
-
         .section-subtitle {
             font-size: 20px;
             font-weight: 700;
@@ -52,14 +46,12 @@
             color: #B2A2A2;
             margin-bottom: 50px;
         }
-
         .cards-container {
             display: grid;
             grid-template-columns: 480px 480px;
             grid-template-rows: repeat(4, 120px);
             gap: 30px 40px;
         }
-
         .card {
             width: 480px;
             height: 120px;
@@ -72,11 +64,9 @@
             cursor: pointer;
             transition: filter 0.3s ease;
         }
-
         .card:hover {
             filter: brightness(0.85);
         }
-
         .card-text {
             font-size: 32px;
             font-weight: 700;
@@ -87,17 +77,14 @@
             width: 100%;
             line-height: 1.2;
         }
-
         .card:nth-child(5) {
             grid-column: 2;
             grid-row: 1;
         }
-
         .card:nth-child(6) {
             grid-column: 2;
             grid-row: 2;
         }
-
         .card:nth-child(7) {
             grid-column: 2;
             grid-row: 3;
@@ -108,33 +95,45 @@
     <header>
         <h1 class="site-title">FormulaFlow</h1>
     </header>
-
     <div class="container">
         <h2 class="section-title">Механика</h2>
         <p class="section-subtitle">выберите раздел</p>
-
         <div class="cards-container">
-            <div class="card">
-                <span class="card-text">Кинематика прямолинейного движения</span>
-            </div>
-            <div class="card">
-                <span class="card-text">Кинематика криволинейного движения</span>
-            </div>
-            <div class="card">
-                <span class="card-text">Динамика</span>
-            </div>
-            <div class="card">
-                <span class="card-text">Статика</span>
-            </div>
-            <div class="card">
-                <span class="card-text">Гидростатика</span>
-            </div>
-            <div class="card">
-                <span class="card-text">Работа, энергия, мощность</span>
-            </div>
-            <div class="card">
-                <span class="card-text">Колебания и волны</span>
-            </div>
+            <a href="permech1.html" class="card-link">
+                <div class="card">
+                    <span class="card-text">Кинематика прямолинейного движения</span>
+                </div>
+            </a>
+            <a href="permech2.html" class="card-link">
+                <div class="card">
+                    <span class="card-text">Кинематика криволинейного движения</span>
+                </div>
+            </a>
+            <a href="permech3.html" class="card-link">
+                <div class="card">
+                    <span class="card-text">Динамика</span>
+                </div>
+            </a>
+            <a href="permech4.html" class="card-link">
+                <div class="card">
+                    <span class="card-text">Статика</span>
+                </div>
+            </a>
+            <a href="permech5.html" class="card-link">
+                <div class="card">
+                    <span class="card-text">Гидростатика</span>
+                </div>
+            </a>
+            <a href="permech6.html" class="card-link">
+                <div class="card">
+                    <span class="card-text">Работа, энергия, мощность</span>
+                </div>
+            </a>
+            <a href="permech7.html" class="card-link">
+                <div class="card">
+                    <span class="card-text">Колебания и волны</span>
+                </div>
+            </a>
         </div>
     </div>
 </body>
