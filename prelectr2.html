@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormulaFlow - Постоянный ток</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #423F3F;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+        header {
+            background-color: #1B1B1D;
+            padding: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+        h1 {
+            color: #A89C9C;
+            font-size: 32px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            padding-bottom: 80px; 
+        }
+        .card {
+            background-color: #D9D9D9;
+            width: min(600px, 90vw);
+            min-height: 380px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding: 30px;
+            user-select: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+        .card.fade-anim {
+            opacity: 0.4;
+            transform: scale(0.98);
+        }
+        .card.slide-out-left {
+            transform: translateX(-50px) scale(0.95);
+            opacity: 0;
+        }
+        .card.slide-in-right {
+            transform: translateX(50px) scale(0.95);
+            opacity: 0;
+            transition: none;
+        }
+        .card-content {
+            color: #1B1B1D;
+            font-size: 26px;
+            text-align: center;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 4px;
+        }
+        .fraction .fraction {
+            font-size: 0.85em;
+            margin: 0 2px;
+        }
+        .num {
+            border-bottom: 2px solid #1B1B1D;
+            padding-bottom: 2px;
+            display: block;
+        }
+        .den {
+            padding-top: 2px;
+            display: block;
+        }
+        sub {font-size: 0.6em; vertical-align: sub; margin-left: 0px;}
+        sup {font-size: 0.6em; vertical-align: super; margin-left: 0px;}
+        .sum-container {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            vertical-align: middle;
+            margin: 0 5px;
+            line-height: 1;
+        }
+        .sum-top { font-size: 0.6em; margin-bottom: -2px; }
+        .sum-symbol { font-size: 1.4em; font-weight: 500; }
+        .sum-bot { font-size: 0.6em; margin-top: -2px; }
+        .btn-back {
+            background-color: #B0B0B0; 
+            color: #1B1B1D;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-back:hover {
+            background-color: #999999;
+        }
+        .btn-home {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #B0B0B0; 
+            color: #1B1B1D;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 100;
+        }
+        .btn-home:hover {
+            background-color: #7A7A7A;
+            color: #FFF;
+        }
+        @media (max-width: 600px) {
+            .btn-home {
+                position: static;
+                margin-top: 10px;
+                width: min(600px, 90vw);
+                text-align: center;
+                border-radius: 12px;
+            }
+            .card-content {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FormulaFlow</h1>
+    </header>
+    <div class="container">
+        <div class="card" id="flashcard">
+            <div class="card-content" id="cardText">
+            </div>
+        </div>
+        <button class="btn-back" id="prevBtn">Назад</button>
+    </div>
+    <a href="index.html" class="btn-home">Вернуться на главную страницу</a>
+    <script>
+        const cardsData = [
+            "Формула силы электрического тока",
+            `I = <div class="fraction"><span class="num">q</span><span class="den">t</span></div>`,
+            "Формула зависимости силы тока<br>от заряда, концентрации, скорости<br>и площади поперечного сечения проводника",
+            `I = q<sub>0</sub>n&nu;S`,
+            "Модуль плотности электрического тока",
+            `j = <div class="fraction"><span class="num">I</span><span class="den">S</span></div>`,
+            "Закон Ома для участка цепи",
+            `I = <div class="fraction"><span class="num">U</span><span class="den">R</span></div>`,
+            "Формула зависимости сопротивления<br>от рода вещества, длины<br>и поперечного сечения проводника",
+            `R = &rho;<div class="fraction"><span class="num">l</span><span class="den">S</span></div>`,
+            "Формула зависимости сопротивления<br>проводника от температуры",
+            `R = R<sub>0</sub>(1 + &alpha;t)`,
+            "Формула сопротивления<br>последовательно соединенных<br>резисторов",
+            `R = <div class="sum-container"><span class="sum-top">n</span><span class="sum-symbol">&Sigma;</span><span class="sum-bot">i=1</span></div>R<sub>i</sub>`,
+            "Формула величины, обратной<br>сопротивлению параллельно<br>соединенных резисторов",
+            `<div class="fraction"><span class="num">1</span><span class="den">R</span></div> = <div class="sum-container"><span class="sum-top">n</span><span class="sum-symbol">&Sigma;</span><span class="sum-bot">i=1</span></div><div class="fraction"><span class="num">1</span><span class="den">R<sub>i</sub></span></div>`,
+            "Формула работы электрического тока",
+            `A = IUt = I<sup>2</sup>Rt = <div class="fraction"><span class="num">U<sup>2</sup></span><span class="den">R</span></div>t`,
+            "Формула мощности электрического тока",
+            `P = <div class="fraction"><span class="num">A</span><span class="den">t</span></div> = IU = I<sup>2</sup>R = <div class="fraction"><span class="num">U<sup>2</sup></span><span class="den">R</span></div>`,
+            "Закон Джоуля-Ленца",
+            `Q = I<sup>2</sup>Rt`,
+            "Формула электродвижущей силы<br>источника тока (ЭДС)",
+            `&#8496; = <div class="fraction"><span class="num">A<sub>ст</sub></span><span class="den">q</span></div>`,
+            "Закон Ома для полной цепи",
+            `I = <div class="fraction"><span class="num">&#8496;</span><span class="den">R + r</span></div>`,
+            "Формула силы тока в полной цепи<br>с n последовательно соединенными<br>одинаковыми элементами ЭДС",
+            `I = <div class="fraction"><span class="num">n&#8496;</span><span class="den">R + nr</span></div>`,
+            "Формула силы тока в неразветвленной<br>части полной цепи с n параллельно<br>соединенными одинаковыми элементами ЭДС",
+            `I = <div class="fraction"><span class="num">&#8496;</span><span class="den">R + <div class="fraction"><span class="num">r</span><span class="den">n</span></div></span></div>`,
+            "Закон Фарадея для электролиза",
+            `m = kIt`
+        ];
+        let currentIndex = 0;
+        const card = document.getElementById('flashcard');
+        const cardText = document.getElementById('cardText');
+        const prevBtn = document.getElementById('prevBtn');
+        function updateCardContent(index) {
+            cardText.innerHTML = cardsData[index];
+        }
+        updateCardContent(0);
+        card.addEventListener('click', () => {
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= cardsData.length) nextIndex = 0;
+            if (currentIndex % 2 === 0) {
+                card.classList.add('fade-anim');
+                setTimeout(() => {
+                    currentIndex = nextIndex;
+                    updateCardContent(currentIndex);
+                    card.classList.remove('fade-anim');
+                }, 200);
+            } else {
+                card.classList.add('slide-out-left');
+                setTimeout(() => {
+                    currentIndex = nextIndex;
+                    updateCardContent(currentIndex);
+                    card.classList.remove('slide-out-left');
+                    card.classList.add('slide-in-right');
+                    setTimeout(() => {
+                        card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                        card.classList.remove('slide-in-right');
+                    }, 50);
+                }, 300);
+            }
+        });
+        prevBtn.addEventListener('click', () => {
+            let targetIndex = currentIndex - 1;
+            if (targetIndex < 0) {
+                targetIndex = cardsData.length - 1;
+            }
+            card.classList.add('fade-anim'); 
+            setTimeout(() => {
+                currentIndex = targetIndex;
+                updateCardContent(currentIndex);
+                card.classList.remove('fade-anim');
+            }, 200);
+        });
+    </script>
+</body>
+</html>
