@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormulaFlow - Электромагнитные колебания и переменный ток</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #423F3F;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+        }
+        header {
+            background-color: #1B1B1D;
+            padding: 20px 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 10;
+        }
+        h1 {
+            color: #A89C9C;
+            font-size: 32px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 300;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+        .container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            gap: 20px;
+            padding-bottom: 120px; 
+        }
+        .card {
+            background-color: #D9D9D9;
+            width: min(600px, 90vw);
+            min-height: 380px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            padding: 30px;
+            user-select: none;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            opacity: 1;
+            transform: translateX(0) scale(1);
+        }
+        .card.fade-anim {
+            opacity: 0.4;
+            transform: scale(0.98);
+        }
+        .card.slide-out-left {
+            transform: translateX(-50px) scale(0.95);
+            opacity: 0;
+        }
+        .card.slide-in-right {
+            transform: translateX(50px) scale(0.95);
+            opacity: 0;
+            transition: none;
+        }
+        .card-content {
+            color: #1B1B1D;
+            font-size: 26px;
+            text-align: center;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+        .fraction {
+            display: inline-flex;
+            flex-direction: column;
+            vertical-align: middle;
+            text-align: center;
+            margin: 0 4px;
+        }
+        .fraction .fraction {
+            font-size: 0.85em;
+            margin: 0 2px;
+        }
+        .num {
+            border-bottom: 2px solid #1B1B1D;
+            padding-bottom: 2px;
+            display: block;
+        }
+        .den {
+            padding-top: 2px;
+            display: block;
+        }
+        
+        .sqrt {
+            display: inline-block;
+            position: relative;
+            vertical-align: middle;
+            margin: 0 2px;
+            height: 2.1em;
+        }
+        .sqrt::before {
+            content: "√";
+            position: absolute;
+            top: 0.35em;
+            left: 0;
+            font-size: 1.25em;
+            font-weight: bold;
+            line-height: 1;
+        }
+        .sqrt-content {
+            display: inline-block;
+            border-top: 2.8px solid #1B1B1D;
+            padding: 0.45em 0.3em 0.25em 0.7em;
+            margin-left: 0.2em;
+            background-color: #D9D9D9;
+            min-width: 2.8em;
+        }
+        .omega {font-weight: 700; font-size: 1.1em;}
+        .phi {font-style: italic; font-weight: 500;}
+        .delta {font-weight: bold; font-size: 1.4em;}
+        sub {font-size: 0.6em; vertical-align: sub; margin-left: 0px; margin-right: 1px;}
+        sup {font-size: 0.6em; vertical-align: super; margin-left: 0px;}
+        .btn-back {
+            background-color: #B8B8B8; 
+            color: #1B1B1D;
+            border: none;
+            padding: 12px 40px;
+            border-radius: 12px;
+            font-size: 18px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+        .btn-back:hover {
+            background-color: #A0A0A0;
+        }
+        .btn-home {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background-color: #B8B8B8; 
+            color: #1B1B1D;
+            padding: 15px 25px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+            z-index: 100;
+            display: block;
+        }
+        .btn-home:hover {
+            background-color: #9A9A9A;
+            color: #FFF;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+        }
+        @media (max-width: 600px) {
+            .btn-home {
+                position: static;
+                margin-top: 10px;
+                width: min(600px, 90vw);
+                text-align: center;
+                border-radius: 12px;
+            }
+            .card-content {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>FormulaFlow</h1>
+    </header>
+    <div class="container">
+        <div class="card" id="flashcard">
+            <div class="card-content" id="cardText">
+            </div>
+        </div>
+        <button class="btn-back" id="prevBtn">Назад</button>
+    </div>
+    <a href="index.html" class="btn-home">Вернуться на главную страницу</a>
+    <script>
+        const cardsData = [
+            "Формула зависимости заряда на обкладках<br>конденсатора в колебательном контуре<br>от времени",
+            `q = q<sub>m</sub> sin(<span class="omega">ω</span>t + <span class="phi">φ</span><sub>0</sub>)`,
+            "Формула зависимости напряжения на<br>обкладках конденсатора в колебательном<br>контуре от времени",
+            `u = U<sub>m</sub> sin(<span class="omega">ω</span>t + <span class="phi">φ</span><sub>0</sub>)`,
+            "Формула зависимости силы тока в<br>колебательном контуре от времени",
+            `i = I<sub>m</sub> cos(<span class="omega">ω</span>t + <span class="phi">φ</span><sub>0</sub>)`,
+            "Формула максимального значения силы тока<br>при электромагнитных колебаниях",
+            `I<sub>m</sub> = <span class="omega">ω</span>q<sub>m</sub>`,
+            "Формула периода собственных колебаний<br>колебательного контура (формула Томсона)",
+            `T = 2π<div class="sqrt"><span class="sqrt-content">LC</span></div>`,
+            "Формула энергии магнитного поля",
+            `W<sub>м</sub> = <div class="fraction"><span class="num">Li<sup>2</sup></span><span class="den">2</span></div>`,
+            "Формула полной энергии электромагнитного<br>поля в колебательном контуре",
+            `<div class="fraction"><span class="num">q<sub>m</sub><sup>2</sup></span><span class="den">2C</span></div> = <div class="fraction"><span class="num">q<sup>2</sup></span><span class="den">2C</span></div> + <div class="fraction"><span class="num">Li<sup>2</sup></span><span class="den">2</span></div> = <div class="fraction"><span class="num">LI<sub>m</sub><sup>2</sup></span><span class="den">2</span></div>`,
+            "Формула действующего значения силы<br>переменного электрического тока",
+            `I<sub>д</sub> = <div class="fraction"><span class="num">I<sub>m</sub></span><span class="den"><div class="sqrt"><span class="sqrt-content">2</span></div></span></div>`,
+            "Формула действующего значения<br>переменного напряжения",
+            `U<sub>д</sub> = <div class="fraction"><span class="num">U<sub>m</sub></span><span class="den"><div class="sqrt"><span class="sqrt-content">2</span></div></span></div>`,
+            "Формула индуктивного сопротивления",
+            `X<sub>L</sub> = <span class="omega">ω</span>L`,
+            "Формула емкостного сопротивления",
+            `X<sub>C</sub> = <div class="fraction"><span class="num">1</span><span class="den"><span class="omega">ω</span>C</span></div>`,
+            "Формула полного сопротивления цепи<br>переменного тока",
+            `Z = <div class="sqrt"><span class="sqrt-content">R<sup>2</sup> + (X<sub>L</sub> - X<sub>C</sub>)<sup>2</sup></span></div>`,
+            "Закон Ома для участка цепи<br>переменного тока",
+            `I = <div class="fraction"><span class="num">U</span><span class="den">Z</span></div>`
+        ];
+        let currentIndex = 0;
+        const card = document.getElementById('flashcard');
+        const cardText = document.getElementById('cardText');
+        const prevBtn = document.getElementById('prevBtn');
+
+        function updateCardContent(index) {
+            cardText.innerHTML = cardsData[index];
+        }
+        updateCardContent(0);
+        card.addEventListener('click', () => {
+            let nextIndex = currentIndex + 1;
+            if (nextIndex >= cardsData.length) nextIndex = 0;
+
+            if (currentIndex % 2 === 0) {
+                card.classList.add('fade-anim');
+                setTimeout(() => {
+                    currentIndex = nextIndex;
+                    updateCardContent(currentIndex);
+                    card.classList.remove('fade-anim');
+                }, 200);
+            } else {
+                card.classList.add('slide-out-left');
+                setTimeout(() => {
+                    currentIndex = nextIndex;
+                    updateCardContent(currentIndex);
+                    card.classList.remove('slide-out-left');
+                    card.classList.add('slide-in-right');
+                    setTimeout(() => {
+                        card.style.transition = 'transform 0.3s ease, opacity 0.3s ease';
+                        card.classList.remove('slide-in-right');
+                    }, 50);
+                }, 300);
+            }
+        });
+        prevBtn.addEventListener('click', () => {
+            let targetIndex = currentIndex - 1;
+            if (targetIndex < 0) {
+                targetIndex = cardsData.length - 1;
+            }
+
+            card.classList.add('fade-anim'); 
+            setTimeout(() => {
+                currentIndex = targetIndex;
+                updateCardContent(currentIndex);
+                card.classList.remove('fade-anim');
+            }, 200);
+        });
+    </script>
+</body>
+</html>
